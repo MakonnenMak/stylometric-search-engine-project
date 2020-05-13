@@ -16,17 +16,32 @@ class Tree:
         self.tree = None
 
     def generate_tree(self):
-        # StanfordParser() function will become depracated 
         sp = stanford.StanfordParser()
-        tree = [t for t in sp.parse(self.value.split())]
+        tree = list(sp.raw_parse(self.value))[0]
         self.tree = tree
         return
+    
+    def clean_tree(self):
+        for node in self.tree.treepositions('leaves'):
+            del(self.tree[node])
 
-    def print_tree(self):
-        if self.tree:
-            print(self.tree[0])
-        else:
-            print("Tree Not Initialized")
+    def subtree(self,i,j):
+        sub_trees = []
+        for st in self.tree.subtrees(lambda t: t.height() == 2):
+            sub_trees.append(st)
+        return sub_trees
+
+t = Tree("My dog also likes eating sausage on the weekend.")
+t.generate_tree()
+t.clean_tree()
+t.tree.pretty_print()
+subtrees = t.subtree(1,3)
+
+for i in subtrees:
+    i.pretty_print()
+
+
+
 
 
 
