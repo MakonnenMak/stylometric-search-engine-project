@@ -14,6 +14,7 @@ class Tree:
     def __init__(self,value):
         self.value = value
         self.tree = None
+        self.generate_tree()
 
     def generate_tree(self):
         sp = stanford.StanfordParser()
@@ -25,22 +26,21 @@ class Tree:
         for node in self.tree.treepositions('leaves'):
             del(self.tree[node])
 
-    def subtree(self,i,j):
+    def subtree(self,height):
         sub_trees = []
-        for st in self.tree.subtrees(lambda t: t.height() == 2):
+        for st in self.tree.subtrees(lambda t: t.height() == height):
             sub_trees.append(st)
         return sub_trees
-
+'''
 t = Tree("My dog also likes eating sausage on the weekend.")
-t.generate_tree()
 t.clean_tree()
 t.tree.pretty_print()
-subtrees = t.subtree(1,3)
+subtrees = t.subtree(2)
 
 for i in subtrees:
     i.pretty_print()
 
-
+'''
 
 
 
