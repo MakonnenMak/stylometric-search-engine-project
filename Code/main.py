@@ -1,6 +1,6 @@
 import json
-from tree import Tree
-from text import TextPreProcess
+from text import *
+from inverted_index import *
 import concurrent.futures
 
 '''
@@ -16,23 +16,22 @@ class Comment:
         self.body = body
 
 comments = [] 
-with open('data/reddit_comments.json') as json_file:
+textProcessor = TextProcess()
+with open('data/mid_subset.json') as json_file:
     for line in json_file:
         data = json.loads(line)
         if data["author"]!="[deleted]":
             author = data["author"]
-            message = TextPreProcess(data["body"])
-            c = Comment(author,message.clean())
+            message = textProcessor.preprocess(data["body"])
+            c = Comment(author,message)
             comments.append(c)
 
+print("original search space")
+print(len(comments))
+inverted_index = InvertedIndex()
+inverted_index.construct(comments)
+inverted_index.search("flouride good holistic dentistry wackos and the weston a price foundation bad")
 
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-    trees = list(executor.map(lambda c: Tree(c.body), comments))
-    pickle.dump(trees, output, pickle.HIGHEST_PROTOCOL)
-    del trees
-print('done')
-
-
-#y = TextPreProcess("&gt; Both are 100% efficient at converting electrical energy to heat.Nearly, but not quite. It's true that energy must be conserved, but it is not true to say that all the electrical energy is converted into heat. Other forms of energy are produced by both devices.")
+#y = TextPreProcess("&gt; Both are 100% efficient at converting electrical energy to heat.Nearly, but not quite. It's true that energy must be conserved, but it is not true to say that all the electrical energy is converted into heat. Other forms of energy are produced by both devices.") Inver 
 #y.clean()
