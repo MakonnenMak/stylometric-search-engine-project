@@ -26,14 +26,13 @@ class InvertedIndex:
                 matching_comments.update(self.inverted_index[n])
         
         if len(matching_comments)==0:
-            print("No matching authors")
             return 
 
         matching_authors = set()
-        print("Matching authors are: ")
-        print(len(matching_comments))
-        #for comment in matching_comments:
+        for comment in matching_comments:
+            matching_authors.add(self.comments[comment].author)
             #print(self.comments[comment].author)
+        return matching_authors
 
 
     
