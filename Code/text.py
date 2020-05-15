@@ -14,8 +14,8 @@ class TextProcess:
         stripped = [w.translate(table) for w in tokens]
         words = [word for word in stripped if word.isalpha()]
         #Remove stopwords
-        #stop_words = set(stopwords.words('english'))
-        #words = [w for w in words if not w in stop_words]
+        stop_words = set(stopwords.words('english'))
+        words = [w for w in words if not w in stop_words]
         return ' '.join(words)
 
     def pos_n_gram(self,text,n):
@@ -34,11 +34,4 @@ class TextProcess:
             output.append(pos)
         return output
    
-
-#js = "And now for something completely"
-#t =TextProcess()
-#a = t.pos_n_gram(s,3)
-#print(a)
-
-#print(nltk.pos_tag(text))
 
